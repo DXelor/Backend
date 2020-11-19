@@ -60,7 +60,17 @@ var controller = {
             if(!projectUpdate) return res.status(404).send({message: 'no existe el proyecto'});
             return res.status(200).send({project: projectUpdate});
         })
-    }
+    },
+    deleteProject: function(req, res){
+        var projectId = req.params.id;
+
+        Project.findByIdAndRemove(projectId,(err, projectRemove)=>{
+            if(err) return res.status(500).send({message: 'error al borrar el proyecto'});
+            if(!projectRemove) return res.status(404).send({message: 'no existe el proyecto'});
+            return res.status(200).send({project: projectRemove});
+        })
+    },
+
 };
 
 module.exports = controller;
