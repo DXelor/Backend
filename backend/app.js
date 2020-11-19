@@ -19,7 +19,9 @@ app.get('/',(req,res)=>{
         "<h1>pagina de inicio</h1>"
     );
 });
-app.get('/test',(req,res)=>{
+app.post('/test',(req,res)=>{
+    console.log(req.body.nombre);
+    console.log(req.body.apellido);
     res.status(200).send({
         message: "API NodeJS"
     })
