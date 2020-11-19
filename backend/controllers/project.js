@@ -2,6 +2,7 @@
 
 const project = require('../models/project');
 var Project = require('../models/project');
+var fs = require('fs');
 
 var controller = {
     home: function(req, res){
@@ -78,12 +79,18 @@ var controller = {
             var filePath= req.files.image.path;
             var fileSplit = filePath.split('\\');
             var fileName = fileSplit[1];
+            var extSplit = fileName.split('\.');
+            var fileExt = extSplit[1];
 
-            Project.findByIdAndUpdate(projectId, {image: fileName}, (err, projectUpdate)=>{
-                if(err) return res.status(500).send({message: 'la imagen no se ah subido'});
-                if(!projectUpdate) return res.status(404).send({message: 'la imagen no existe'});
-                return res.status(200).send({project: projectUpdate});
-            })
+            if(fileExt == 'png' || fileExt == 'jpg' || fileExt == 'jpeg' || fileExt == 'gif'){
+                Project.findByIdAndUpdate(projectId, {image: fileName}, (err, projectUpdate)=>{
+                    if(err) return res.status(500).send({message: 'la imagen no se ah subido'});
+                    if(!projectUpdate) return res.status(404).send({message: 'la imagen no existe'});
+                    return res.status(200).send({project: projectUpdate});
+                });
+            }else{
+                fs.unlink(filePath, (err)=>{return res.status(200).send({message:'la extencion no es válida'})});
+            }
         }else{
             return res.status(200).send({message: fileName})
         };
