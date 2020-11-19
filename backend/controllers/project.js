@@ -70,7 +70,24 @@ var controller = {
             return res.status(200).send({project: projectRemove});
         })
     },
+    uploadImage: function(req, res){
+        var projectId = req.params.id;
+        var fileName = 'imagen no subida...';
 
+        if(req.files) {
+            var filePath= req.files.image.path;
+            var fileSplit = filePath.split('\\');
+            var fileName = fileSplit[1];
+
+            Project.findByIdAndUpdate(projectId, {image: fileName}, (err, projectUpdate)=>{
+                if(err) return res.status(500).send({message: 'la imagen no se ah subido'});
+                if(!projectUpdate) return res.status(404).send({message: 'la imagen no existe'});
+                return res.status(200).send({project: projectUpdate});
+            })
+        }else{
+            return res.status(200).send({message: fileName})
+        };
+    },
 };
 
 module.exports = controller;
