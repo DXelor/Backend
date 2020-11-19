@@ -8,7 +8,8 @@ var ProjectSchema = Schema({
     descripcion: String,
     category: String,
     year: Number,
-    langs: [String]
+    langs: String,
+    image: String
 });
 
 module.exports = mongoose.model('Project', ProjectSchema) //mongodb pone todo en minusculas y pluraliza , Project = projects
